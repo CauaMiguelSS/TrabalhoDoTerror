@@ -3,7 +3,7 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    public enum State { Patrol, Chase }
+    public enum State {Patrol, Chase, Investigate}
 
     [Header("References")]
     public Transform player;
@@ -33,6 +33,12 @@ public class EnemyAI : MonoBehaviour
     private float waitTimer;
     private bool jumpscareTriggered;
 
+    private Vector3 lastSeenPosition;
+    private float investigateTimer;
+
+    [Header("Investigation")]
+    public float investigateTime = 5f;
+
     void Start()
     {
         if (agent == null)
@@ -61,6 +67,10 @@ public class EnemyAI : MonoBehaviour
             case State.Chase:
                 Chase();
                 break;
+
+            case State.Investigate:
+                Investigate();
+                break;
         }
     }
 
@@ -80,6 +90,7 @@ public class EnemyAI : MonoBehaviour
 
         if (!Physics.Raycast(eye, dir, dist, obstacleMask))
         {
+            lastSeenPosition = player.position;
             state = State.Chase;
         }
     }
@@ -100,10 +111,7 @@ public class EnemyAI : MonoBehaviour
                 waitTimer = 0f;
 
                 patrolIndex = Random.Range(0, patrolPoints.Length);
-
-                agent.SetDestination(
-                    patrolPoints[patrolIndex].position
-                );
+                agent.SetDestination(patrolPoints[patrolIndex].position);
             }
         }
     }
@@ -113,10 +121,7 @@ public class EnemyAI : MonoBehaviour
         if (jumpscareTriggered)
             return;
 
-        float dist = Vector3.Distance(
-            transform.position,
-            player.position
-        );
+        float dist = Vector3.Distance(transform.position, player.position);
 
         if (dist <= stopDistance)
         {
@@ -126,7 +131,7 @@ public class EnemyAI : MonoBehaviour
             {
                 jumpscareManager.TriggerJumpscare();
             }
-
+            
             return;
         }
 
@@ -134,15 +139,13 @@ public class EnemyAI : MonoBehaviour
         {
             agent.isStopped = true;
 
-            Vector3 lookDir =
-                player.position - transform.position;
+            Vector3 lookDir = player.position - transform.position;
 
             lookDir.y = 0f;
 
             if (lookDir != Vector3.zero)
             {
-                transform.rotation =
-                    Quaternion.LookRotation(lookDir);
+                transform.rotation = Quaternion.LookRotation(lookDir);
             }
 
             return;
@@ -163,25 +166,15 @@ public class EnemyAI : MonoBehaviour
             (transform.position - eyePos).normalized;
 
         float angle =
-            Vector3.Angle(
-                playerCamera.forward,
-                dirToEnemy
-            );
+            Vector3.Angle(playerCamera.forward, dirToEnemy);
 
         if (angle > 45f)
             return false;
 
         float distance =
-            Vector3.Distance(
-                eyePos,
-                transform.position
-            );
+            Vector3.Distance(eyePos, transform.position);
 
-        if (Physics.Raycast(
-            eyePos,
-            dirToEnemy,
-            out RaycastHit hit,
-            distance))
+        if (Physics.Raycast(eyePos, dirToEnemy, out RaycastHit hit, distance))
         {
             if (hit.transform == transform)
                 return true;
@@ -199,5 +192,28 @@ public class EnemyAI : MonoBehaviour
         }
 
         enabled = false;
+    }
+    void Investigate()
+    {
+        agent.isStopped = false;
+        agent.speed = patrolSpeed;
+
+        agent.SetDestination(lastSeenPosition);
+
+        if (Vector3.Distance(transform.position, lastSeenPosition) < 1f)
+        {
+            investigateTimer -= Time.deltaTime;
+
+            if (investigateTimer <= 0)
+            {
+                state = State.Patrol;
+
+                if (patrolPoints.Length > 0)
+                {
+                    patrolIndex = Random.Range(0, patrolPoints.Length);
+                    agent.SetDestination(patrolPoints[patrolIndex].position);
+                }
+            }
+        }
     }
 }
