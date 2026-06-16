@@ -820,7 +820,6 @@ GameObject:
   - component: {fileID: 1083618327}
   - component: {fileID: 1083618326}
   - component: {fileID: 1083618325}
-  - component: {fileID: 1083618324}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -828,29 +827,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1083618324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1083618323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a9b5f950f1e4d47a47b8c51eb041c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::JumpscareController
-  playerCamera: {fileID: 8338988565591873055}
-  playerRb: {fileID: 1923000896}
-  playerScripts: []
-  enemy: {fileID: 1083618323}
-  enemyAI: {fileID: 1083618325}
-  headTarget: {fileID: 348090736}
-  distanceFromCamera: 1.5
-  deathScreen: {fileID: 0}
-  sound: {fileID: 0}
-  deathScreenDelay: 0.8
-  cameraSnapSpeed: 10
 --- !u!114 &1083618325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,8 +839,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14abadfbda2214747bf8971531a401bd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIEnemy
-  state: 0
-  player: {fileID: 8338988565591873055}
+  player: {fileID: 135756641613574976}
+  playerCamera: {fileID: 8338988565591873055}
   agent: {fileID: 1083618326}
   patrolPoints:
   - {fileID: 570361435}
@@ -875,26 +851,16 @@ MonoBehaviour:
   - {fileID: 138279447}
   - {fileID: 582177113}
   - {fileID: 1875391686}
-  footstepAudio: {fileID: 0}
-  jumpscareManager: {fileID: 1083618324}
+  jumpscareManager: {fileID: 2143458880}
   viewDistance: 12
   viewAngle: 100
-  visionMask:
-    serializedVersion: 2
-    m_Bits: 8
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 4294967295
-  hearingRange: 10
+    m_Bits: 1
   patrolSpeed: 2
   chaseSpeed: 4
   stopDistance: 2.2
-  maxStepDistance: 20
-  minVolume: 0.05
-  maxVolume: 0.8
   waitTime: 2
-  searchDuration: 7
-  startDelay: 0
 --- !u!195 &1083618326
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1181,7 +1147,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5393215578589016642, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
   m_PrefabInstance: {fileID: 5393215579111688471}
   m_PrefabAsset: {fileID: 0}
---- !u!54 &1923000896
+--- !u!54 &1923000901
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1189,7 +1155,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923000891}
   serializedVersion: 5
-  m_Mass: 1
+  m_Mass: 0.0000001
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1203,8 +1169,8 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
@@ -1437,7 +1403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8345070700331616360, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
       propertyPath: m_LocalScale.z
-      value: 3.0165725
+      value: 5.508563
       objectReference: {fileID: 0}
     - target: {fileID: 8345070700331616360, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1445,11 +1411,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8345070700331616360, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8345070700331616360, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.163
+      value: 0.6657
       objectReference: {fileID: 0}
     - target: {fileID: 8345070700331616360, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1479,6 +1445,59 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1838341194}
   m_SourcePrefab: {fileID: 100100000, guid: 09aade0ecefd01e4b8f7661acf64f5c2, type: 3}
+--- !u!1 &2143458879
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2143458881}
+  - component: {fileID: 2143458880}
+  m_Layer: 0
+  m_Name: JumpscareController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2143458880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143458879}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a9b5f950f1e4d47a47b8c51eb041c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JumpscareController
+  playerCamera: {fileID: 8338988565591873055}
+  playerScripts:
+  - {fileID: 135756641613574977}
+  - {fileID: 135756641613574975}
+  enemy: {fileID: 1083618323}
+  enemyAI: {fileID: 1083618325}
+  deathScreen: {fileID: 0}
+  jumpscareSound: {fileID: 0}
+  distanceFromCamera: 2
+--- !u!4 &2143458881
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2143458879}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.75003, y: 2.60986, z: 13.74396}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &60889539378096550
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1557,6 +1576,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e087ecce43ebbff45a1b360637807d93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &135756641613574976 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8997996947095583982, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 5393215579111688471}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &135756641613574977 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8616685848737228371, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
+  m_PrefabInstance: {fileID: 5393215579111688471}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55919ac34a26952479f3fc91f777b2fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2114283753834967212
@@ -1800,7 +1835,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5393215578589016642, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1923000896}
+      addedObject: {fileID: 1923000901}
   m_SourcePrefab: {fileID: 100100000, guid: c5efc39a8aaf6e64ea40e9ad573e9b47, type: 3}
 --- !u!1001 &7288094137546172433
 PrefabInstance:
@@ -1877,11 +1912,12 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 2114283753834967213}
+  - {fileID: 1979352518}
+  - {fileID: 746329221}
   - {fileID: 2084445384}
   - {fileID: 60889539378096550}
   - {fileID: 7288094137546172433}
   - {fileID: 5393215579111688471}
-  - {fileID: 1979352518}
-  - {fileID: 746329221}
   - {fileID: 1083618330}
   - {fileID: 1940715489}
+  - {fileID: 2143458881}
