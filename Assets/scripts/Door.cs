@@ -2,27 +2,37 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    public bool abrir = false;
+    public bool open = false;
     public float altura = 3f;
-    public float velocidade = 2f;
+    public float velocity = 2f;
 
-    private Vector3 destino;
+    private Vector3 destination;
+    private AudioSource audioSource;
+    private bool tocouSom = false;
 
     void Start()
     {
-        destino = transform.position + Vector3.up * altura;
+        destination = transform.position + Vector3.up * altura;
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        if (abrir)
+        if (open)
         {
+            if (!tocouSom)
+            {
+                audioSource.Play();
+                tocouSom = true;
+            }
+
             transform.position = Vector3.MoveTowards(
                 transform.position,
-                destino,
-                velocidade * Time.deltaTime
+                destination,
+                velocity * Time.deltaTime
             );
         }
     }
+
 
 }
