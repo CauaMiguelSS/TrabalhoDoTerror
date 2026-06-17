@@ -8,7 +8,7 @@ public class Door : MonoBehaviour
 
     private Vector3 destination;
     private AudioSource audioSource;
-   [SerializeField] private bool tocouSom = false;
+    private bool tocouSom = false;
 
     void Start()
     {
