@@ -1,3 +1,4 @@
+using StarterAssets;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -39,6 +40,12 @@ public class EnemyAI : MonoBehaviour
     [Header("Investigation")]
     public float investigateTime = 5f;
 
+    [Header("Proximity")]
+    public float proximityRange = 4f;
+
+    [Header("Hearing")]
+    public float hearingRange = 8f;
+
     void Start()
     {
         if (agent == null)
@@ -53,8 +60,22 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(state);
         if (player == null || playerCamera == null)
             return;
+        FirstPersonController controller = player.GetComponent<FirstPersonController>();
+
+        if (controller != null)
+        {
+            float dist =
+                Vector3.Distance(transform.position, player.position);
+
+            if (controller.GetComponent<CharacterController>().velocity.magnitude > 5.5f && dist <= hearingRange)
+            {
+                lastSeenPosition = player.position;
+                state = State.Chase;
+            }
+        }
 
         DetectPlayer();
 
@@ -155,6 +176,41 @@ public class EnemyAI : MonoBehaviour
         agent.isStopped = false;
 
         agent.SetDestination(player.position);
+
+        lastSeenPosition = player.position;
+
+        Vector3 eye = transform.position + Vector3.up * 1.6f;
+        Vector3 dir = (player.position - eye).normalized;
+
+        float distanceToPlayer =
+            Vector3.Distance(transform.position, player.position);
+
+        float angle =
+            Vector3.Angle(transform.forward, dir);
+
+        bool canSeePlayer = false;
+
+        if (distanceToPlayer <= viewDistance &&
+            angle <= viewAngle * 0.5f)
+        {
+            if (!Physics.Raycast(
+                eye,
+                dir,
+                distanceToPlayer,
+                obstacleMask))
+            {
+                canSeePlayer = true;
+            }
+        }
+
+        if (!canSeePlayer)
+        {
+            investigateTimer = investigateTime;
+
+            agent.isStopped = false;
+
+            state = State.Investigate;
+        }
     }
 
     bool IsBeingLookedAt()
@@ -196,11 +252,13 @@ public class EnemyAI : MonoBehaviour
     void Investigate()
     {
         agent.isStopped = false;
+
         agent.speed = patrolSpeed;
 
         agent.SetDestination(lastSeenPosition);
 
-        if (Vector3.Distance(transform.position, lastSeenPosition) < 1f)
+        if (!agent.pathPending &&
+            agent.remainingDistance <= 1f)
         {
             investigateTimer -= Time.deltaTime;
 
@@ -210,8 +268,13 @@ public class EnemyAI : MonoBehaviour
 
                 if (patrolPoints.Length > 0)
                 {
-                    patrolIndex = Random.Range(0, patrolPoints.Length);
-                    agent.SetDestination(patrolPoints[patrolIndex].position);
+                    patrolIndex =
+                        Random.Range(
+                            0,
+                            patrolPoints.Length);
+
+                    agent.SetDestination(
+                        patrolPoints[patrolIndex].position);
                 }
             }
         }
