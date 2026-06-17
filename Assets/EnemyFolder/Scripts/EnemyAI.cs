@@ -1,10 +1,28 @@
 using StarterAssets;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Audio;
+using UnityEngine.Rendering;
 
 public class EnemyAI : MonoBehaviour
 {
     public enum State {Patrol, Chase, Investigate}
+
+    [Header("Audio")]
+
+    public AudioSource audioSource;
+
+    public AudioClip patrolSound;
+    public AudioClip investigateSound;
+    public AudioClip chaseSound;
+
+    [Header("Sound Distance")]
+
+    public float maxSoundDistance = 20f;
+    public float minVolume = 0.05f;
+    public float maxVolume = 1f;
+
+    private AudioClip currentClip;
 
     [Header("References")]
     public Transform player;
@@ -60,7 +78,6 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(state);
         if (player == null || playerCamera == null)
             return;
         FirstPersonController controller = player.GetComponent<FirstPersonController>();
@@ -97,6 +114,8 @@ public class EnemyAI : MonoBehaviour
 
     void DetectPlayer()
     {
+        UpdateAudio();
+
         Vector3 eye = transform.position + Vector3.up * 1.6f;
         Vector3 dir = (player.position - eye).normalized;
 
@@ -212,7 +231,36 @@ public class EnemyAI : MonoBehaviour
             state = State.Investigate;
         }
     }
+    void Investigate()
+    {
+        agent.isStopped = false;
 
+        agent.speed = patrolSpeed;
+
+        agent.SetDestination(lastSeenPosition);
+
+        if (!agent.pathPending &&
+            agent.remainingDistance <= 1f)
+        {
+            investigateTimer -= Time.deltaTime;
+
+            if (investigateTimer <= 0)
+            {
+                state = State.Patrol;
+
+                if (patrolPoints.Length > 0)
+                {
+                    patrolIndex =
+                        Random.Range(
+                            0,
+                            patrolPoints.Length);
+
+                    agent.SetDestination(
+                        patrolPoints[patrolIndex].position);
+                }
+            }
+        }
+    }
     bool IsBeingLookedAt()
     {
         Vector3 eyePos =
@@ -249,34 +297,50 @@ public class EnemyAI : MonoBehaviour
 
         enabled = false;
     }
-    void Investigate()
+    void UpdateAudio()
     {
-        agent.isStopped = false;
+        if (audioSource == null || player == null)
+            return;
 
-        agent.speed = patrolSpeed;
+        AudioClip targetClip = null;
 
-        agent.SetDestination(lastSeenPosition);
-
-        if (!agent.pathPending &&
-            agent.remainingDistance <= 1f)
+        switch (state)
         {
-            investigateTimer -= Time.deltaTime;
+            case State.Patrol:
+                targetClip = patrolSound;
+                break;
 
-            if (investigateTimer <= 0)
-            {
-                state = State.Patrol;
+            case State.Investigate:
+                targetClip = investigateSound;
+                break;
 
-                if (patrolPoints.Length > 0)
-                {
-                    patrolIndex =
-                        Random.Range(
-                            0,
-                            patrolPoints.Length);
-
-                    agent.SetDestination(
-                        patrolPoints[patrolIndex].position);
-                }
-            }
+            case State.Chase:
+                targetClip = chaseSound;
+                break;
         }
+
+        if (targetClip != currentClip)
+        {
+            currentClip = targetClip;
+
+            audioSource.clip = currentClip;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+
+        float distance =
+            Vector3.Distance(
+                transform.position,
+                player.position);
+
+        float t =
+            Mathf.Clamp01(
+                1f - distance / maxSoundDistance);
+
+        audioSource.volume =
+            Mathf.Lerp(
+                minVolume,
+                maxVolume,
+                t);
     }
 }

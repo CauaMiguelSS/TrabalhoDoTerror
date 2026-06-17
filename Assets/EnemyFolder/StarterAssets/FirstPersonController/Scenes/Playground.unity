@@ -1144,16 +1144,18 @@ MonoBehaviour:
   - {fileID: 582177113}
   - {fileID: 1875391686}
   jumpscareManager: {fileID: 2143458880}
-  viewDistance: 12
-  viewAngle: 100
+  viewDistance: 20
+  viewAngle: 120
   obstacleMask:
     serializedVersion: 2
     m_Bits: 1
-  patrolSpeed: 2
-  chaseSpeed: 4
-  stopDistance: 2.2
+  patrolSpeed: 3
+  chaseSpeed: 7
+  stopDistance: 2.5
   waitTime: 2
   investigateTime: 5
+  proximityRange: 4
+  hearingRange: 8
 --- !u!195 &1083618326
 NavMeshAgent:
   m_ObjectHideFlags: 0
