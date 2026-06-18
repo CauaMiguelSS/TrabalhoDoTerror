@@ -10,7 +10,7 @@ public class Leitor : MonoBehaviour
 
         if (jogador != null && jogador.temCartao)
         {
-            porta.abrir = true;
+            porta.open = true;
         }
     }
 }
