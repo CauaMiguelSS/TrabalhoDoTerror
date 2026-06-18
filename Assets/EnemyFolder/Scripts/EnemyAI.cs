@@ -15,6 +15,7 @@ public class EnemyAI : MonoBehaviour
     public AudioClip patrolSound;
     public AudioClip investigateSound;
     public AudioClip chaseSound;
+    public AudioClip frozenSound;
 
     [Header("Sound Distance")]
 
@@ -304,18 +305,40 @@ public class EnemyAI : MonoBehaviour
 
         AudioClip targetClip = null;
 
+        if (state == State.Chase && IsBeingLookedAt())
+        {
+            targetClip = frozenSound;
+            audioSource.pitch = 0.6f;
+        }
+        else
+        {
+            switch (state)
+            {
+                case State.Patrol:
+                    targetClip = patrolSound;
+                    break;
+
+                case State.Investigate:
+                    targetClip = investigateSound;
+                    break;
+
+                case State.Chase:
+                    targetClip = chaseSound;
+                    break;
+            }
+        }
         switch (state)
         {
             case State.Patrol:
-                targetClip = patrolSound;
+                audioSource.pitch = 0.9f;
                 break;
 
             case State.Investigate:
-                targetClip = investigateSound;
+                audioSource.pitch = 0.75f;
                 break;
 
             case State.Chase:
-                targetClip = chaseSound;
+                audioSource.pitch = 1.15f;
                 break;
         }
 
