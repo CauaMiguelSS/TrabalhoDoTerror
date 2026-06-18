@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class Leitor : MonoBehaviour 
+public class Leitor : MonoBehaviour, IInteractable
 {
     public Door porta;
     private IInteractable _target;
+    private Outline _out;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -17,5 +18,23 @@ public class Leitor : MonoBehaviour
     public void Interact()
     {
         _target.Interact();
+    }
+
+    private void Start()
+    {
+        _out = GetComponentInChildren<Outline>();
+        if (_out != null)
+            _out.enabled = false;
+    }
+    public void ShowOutline()
+    {
+        if (_out != null)
+            _out.enabled = true;
+    }
+
+    public void HideOutline()
+    {
+        if (_out != null)
+            _out.enabled = false;
     }
 }

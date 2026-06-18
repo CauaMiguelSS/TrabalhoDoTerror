@@ -2,16 +2,19 @@ using UnityEngine;
 
 public class Cartao : MonoBehaviour, IInteractable
 {
-    [SerializeField] private bool _isOn;
     private Outline _out;
 
     private void Start()
     {
         _out = GetComponentInChildren<Outline>();
+
+        if (_out != null)
+            _out.enabled = false;
     }
-    private void OnTriggerEnter(Collider other)
+
+    public void Interact()
     {
-        PlayerMovement jogador = other.GetComponent<PlayerMovement>();
+        PlayerMovement jogador = FindFirstObjectByType<PlayerMovement>();
 
         if (jogador != null)
         {
@@ -20,15 +23,12 @@ public class Cartao : MonoBehaviour, IInteractable
         }
     }
 
-    public void Interact()
-    {
-        _isOn = !_isOn;
-    }
     public void ShowOutline()
     {
         if (_out != null)
             _out.enabled = true;
     }
+
     public void HideOutline()
     {
         if (_out != null)
