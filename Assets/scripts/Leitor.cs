@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public class Leitor : MonoBehaviour
+public class Leitor : MonoBehaviour 
 {
     public Door porta;
+    private IInteractable _target;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -12,5 +13,9 @@ public class Leitor : MonoBehaviour
         {
             porta.open = true;
         }
+    }
+    public void Interact()
+    {
+        _target.Interact();
     }
 }

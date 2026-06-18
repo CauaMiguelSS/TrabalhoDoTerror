@@ -32,7 +32,7 @@ public class Door : MonoBehaviour
                 velocity * Time.deltaTime
             );
         }
-        else if(!abrir)
+        else if(!open)
         { 
         
         }

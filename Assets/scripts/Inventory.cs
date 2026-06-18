@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class Inventory : MonoBehaviour
 {
     private int _batteries;
-    [SerializeField] private float _interactionRange = 3f;
+    [SerializeField] private float _interactionRange = 1f;
     private Camera _mainCam;
     private ICollectable _target;//Objeto alvo do raycast
     // Start is called once before the first execution of Update after the MonoBehaviour is created
