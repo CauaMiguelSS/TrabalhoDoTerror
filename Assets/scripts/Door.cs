@@ -10,5 +10,9 @@ public class Door : MonoBehaviour
         {
             transform.position += Vector3.up * 2f * Time.deltaTime;
         }
+        else if(!abrir)
+        { 
+        
+        }
     }
 }
