@@ -37,7 +37,7 @@
                     "name": "Interact",
                     "type": "Button",
                     "id": "852140f2-7766-474d-8707-702459ba45f3",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Hold",
                     "initialStateCheck": false
@@ -46,7 +46,7 @@
                     "name": "Crouch",
                     "type": "Button",
                     "id": "27c5f898-bc57-4ee1-8800-db469aca5fe3",
-                    "expectedControlType": "",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -88,9 +88,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
+                    "name": "FlashLight",
                     "type": "Button",
-                    "id": "6d385176-5cab-4e11-9f09-adf1e3e1ce5f",
+                    "id": "c82a9f9e-fded-4d44-a042-a34a38977f8b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -485,12 +485,12 @@
                 },
                 {
                     "name": "",
-                    "id": "02c45166-a705-4891-b276-1575cb921123",
-                    "path": "",
+                    "id": "e52c150b-495d-4d94-8e66-6689febd12ea",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "FlashLight",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
