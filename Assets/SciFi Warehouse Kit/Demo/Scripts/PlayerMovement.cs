@@ -59,7 +59,10 @@ public class PlayerMovement : MonoBehaviour
                 }
              }
          }
-
+    public bool IsRunning()
+    {
+        return Input.GetKey(KeyCode.LeftShift);
+    }
 }
 
 
