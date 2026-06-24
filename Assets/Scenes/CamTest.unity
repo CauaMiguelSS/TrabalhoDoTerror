@@ -366,6 +366,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LiveSystem
   _audienceText: {fileID: 1804602562}
+  _idleTimeToLoseViewers: 6
+  _viewLossAmount: 2
   _chatSlots:
   - {fileID: 1233700241}
   - {fileID: 2112646680}
