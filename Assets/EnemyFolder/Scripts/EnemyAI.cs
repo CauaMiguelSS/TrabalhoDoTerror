@@ -41,6 +41,7 @@ public class EnemyAI : MonoBehaviour
     [Header("Movement")]
     public float patrolSpeed = 2f;
     public float chaseSpeed = 8f;
+    public Animator animator;
 
     [Header("Attack")]
     public float stopDistance = 2f;
@@ -75,12 +76,27 @@ public class EnemyAI : MonoBehaviour
             patrolIndex = Random.Range(0, patrolPoints.Length);
             agent.SetDestination(patrolPoints[patrolIndex].position);
         }
+        if (agent == null)
+            agent = GetComponent<NavMeshAgent>();
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        if (patrolPoints.Length > 0)
+        {
+            patrolIndex = Random.Range(0, patrolPoints.Length);
+            agent.SetDestination(patrolPoints[patrolIndex].position);
+        }
     }
 
     void Update()
     {
         if (player == null || playerCamera == null)
             return;
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", agent.velocity.magnitude);
+        }
         FirstPersonController controller = player.GetComponent<FirstPersonController>();
 
         if (controller != null)
@@ -140,6 +156,12 @@ public class EnemyAI : MonoBehaviour
     {
         agent.speed = patrolSpeed;
 
+        if (animator != null)
+        {
+            animator.SetBool("Patrol", true);
+            animator.SetBool("Chase", false);
+        }
+
         if (patrolPoints.Length == 0)
             return;
 
@@ -159,6 +181,13 @@ public class EnemyAI : MonoBehaviour
 
     void Chase()
     {
+       
+        if (animator != null)
+        {
+            animator.SetBool("Patrol", false);
+            animator.SetBool("Chase", true);
+        }
+
         if (jumpscareTriggered)
             return;
 
@@ -171,6 +200,7 @@ public class EnemyAI : MonoBehaviour
             if (jumpscareManager != null)
             {
                 jumpscareManager.TriggerJumpscare();
+                
             }
             
             return;
@@ -230,10 +260,16 @@ public class EnemyAI : MonoBehaviour
             agent.isStopped = false;
 
             state = State.Investigate;
+            
         }
     }
     void Investigate()
     {
+        if (animator != null)
+        {
+            animator.SetBool("Patrol", false);
+            animator.SetBool("Chase", false);
+        }
         agent.isStopped = false;
 
         agent.speed = patrolSpeed;
