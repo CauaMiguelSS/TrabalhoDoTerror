@@ -10,6 +10,7 @@ public class JumpscareController : MonoBehaviour
     [Header("Enemy")]
     public GameObject enemy;
     public EnemyAI enemyAI;
+    public Transform lookTarget;
 
     [Header("UI")]
     public GameObject deathScreen;
@@ -17,17 +18,31 @@ public class JumpscareController : MonoBehaviour
     [Header("Audio")]
     public AudioSource jumpscareSound;
 
-    [Header("Settings")]
-    public float distanceFromCamera = 1.5f;
-
     bool triggered = false;
+    bool lockCamera;
 
     void Start()
     {
         if (deathScreen != null)
             deathScreen.SetActive(false);
     }
+    void LateUpdate()
+    {
+        if (!lockCamera)
+            return;
 
+        if (playerCamera == null || lookTarget == null)
+            return;
+
+        Vector3 dir =
+            (lookTarget.position - playerCamera.position).normalized;
+
+        Quaternion targetRot =
+            Quaternion.LookRotation(dir);
+
+        playerCamera.rotation =
+            Quaternion.Slerp(playerCamera.rotation, targetRot, Time.deltaTime * 12f);
+    }
     public void TriggerJumpscare()
     {
         Debug.Log("JUMPSCARE EXECUTOU");
@@ -36,7 +51,6 @@ public class JumpscareController : MonoBehaviour
 
         triggered = true;
 
-        // trava player
         foreach (MonoBehaviour script in playerScripts)
         {
             if (script != null)
@@ -48,7 +62,7 @@ public class JumpscareController : MonoBehaviour
             enemyAI.FreezeEnemy();
         }
 
-        PositionEnemy();
+        lockCamera = true;
 
         if (jumpscareSound != null)
         {
@@ -56,20 +70,6 @@ public class JumpscareController : MonoBehaviour
         }
 
         Invoke(nameof(ShowDeathScreen), 0.5f);
-    }
-
-    void PositionEnemy()
-    {
-        if (enemy == null || playerCamera == null)
-            return;
-
-        Vector3 pos =
-            playerCamera.position +
-            playerCamera.forward * distanceFromCamera;
-
-        enemy.transform.position = pos;
-
-        enemy.transform.LookAt(playerCamera);
     }
 
     void ShowDeathScreen()

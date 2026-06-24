@@ -1774,6 +1774,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 439456397154621842, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+      propertyPath: lookTarget
+      value: 
+      objectReference: {fileID: 925652461}
+    - target: {fileID: 439456397154621842, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 963194228}
@@ -1830,9 +1834,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+      propertyPath: hearingRange
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 963194228}
+    - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+      propertyPath: proximityRange
+      value: 2.3
+      objectReference: {fileID: 0}
     - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: patrolPoints.Array.size
       value: 9
@@ -20828,6 +20840,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5725000371507048362, guid: b2452a5c2cd649a4db9eebcd16f7b155, type: 3}
   m_PrefabInstance: {fileID: 920224850}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &925652461 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3092059051551251231, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+  m_PrefabInstance: {fileID: 94921490}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &927610908
 GameObject:
@@ -50421,6 +50438,10 @@ PrefabInstance:
     - target: {fileID: 100006, guid: 1b74ff2139ba6ea47803d0c80ee0702a, type: 3}
       propertyPath: m_Name
       value: LP_Bay_Door_snaps
+      objectReference: {fileID: 0}
+    - target: {fileID: 100006, guid: 1b74ff2139ba6ea47803d0c80ee0702a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 1b74ff2139ba6ea47803d0c80ee0702a, type: 3}
       propertyPath: m_LocalPosition.y

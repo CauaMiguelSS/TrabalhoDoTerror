@@ -186,7 +186,7 @@ public class EnemyAI : MonoBehaviour
 
     void Chase()
     {
-       
+        float heightDifference = Mathf.Abs(transform.position.y - lastSeenPosition.y);
         if (animator != null)
         {
             animator.SetBool("Patrol", false);
@@ -266,6 +266,12 @@ public class EnemyAI : MonoBehaviour
 
             state = State.Investigate;
             
+        }
+
+        if (heightDifference > 2f)
+        {
+            state = State.Patrol;
+            return;
         }
     }
     void Investigate()
@@ -406,5 +412,21 @@ public class EnemyAI : MonoBehaviour
                 minVolume,
                 maxVolume,
                 t);
+    }
+    public void HearNoise(Vector3 noisePosition)
+    {
+        float dist =
+            Vector3.Distance(
+                transform.position,
+                noisePosition);
+
+        if (dist > hearingRange)
+            return;
+
+        lastSeenPosition = noisePosition;
+
+        investigateTimer = investigateTime;
+
+        state = State.Investigate;
     }
 }
