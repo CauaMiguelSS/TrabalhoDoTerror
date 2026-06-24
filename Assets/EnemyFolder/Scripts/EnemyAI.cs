@@ -80,7 +80,7 @@ public class EnemyAI : MonoBehaviour
             agent = GetComponent<NavMeshAgent>();
 
         if (animator == null)
-            animator = GetComponentInChildren<Animator>();
+            animator = GetComponent <Animator>();
 
         if (patrolPoints.Length > 0)
         {
@@ -91,6 +91,8 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+
+        
         if (player == null || playerCamera == null)
             return;
         if (animator != null)
@@ -154,12 +156,15 @@ public class EnemyAI : MonoBehaviour
 
     void Patrol()
     {
+        Debug.Log("ESTOU PATRULHANDO");
         agent.speed = patrolSpeed;
 
         if (animator != null)
         {
             animator.SetBool("Patrol", true);
             animator.SetBool("Chase", false);
+
+            Debug.Log("PATROL TRUE");
         }
 
         if (patrolPoints.Length == 0)
