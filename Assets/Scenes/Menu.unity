@@ -905,8 +905,6 @@ GameObject:
   m_Component:
   - component: {fileID: 967807707}
   - component: {fileID: 967807706}
-  - component: {fileID: 967807708}
-  - component: {fileID: 967807709}
   - component: {fileID: 967807710}
   m_Layer: 0
   m_Name: MenuManager
@@ -951,32 +949,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &967807708
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 967807704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a39784cde2ea124c8ec373aed67c470, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Teste
---- !u!114 &967807709
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 967807704}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb0d9e54ed7d56f4d8ba9050688a0a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MenuCursor
-  cursor: {fileID: 2135974696}
-  offsetX: -444
 --- !u!114 &967807710
 MonoBehaviour:
   m_ObjectHideFlags: 0

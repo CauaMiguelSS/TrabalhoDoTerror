@@ -18,6 +18,9 @@ public class LiveSystem : MonoBehaviour
     [SerializeField] private TMP_Text _audienceText;
     private int _audienceCount = 3;
     private bool _isUpdatingAudience;
+    [SerializeField] private float _idleTimeToLoseViewers = 6f;
+    [SerializeField] private int _viewLossAmount = 2;
+    private float _idleTimer;
 
     [Header("Chat")]
     [SerializeField] private TMP_Text[] _chatSlots;
@@ -63,10 +66,22 @@ public class LiveSystem : MonoBehaviour
     {
         UpdateAudienceUI(_audienceCount);
         ClearChat();
+        _idleTimer = _idleTimeToLoseViewers;
     }
 
+    private void Update()
+    {
+        _idleTimer -= Time.deltaTime;
+
+        if (_idleTimer <= 0f)
+        {
+            RemoveAudience(_viewLossAmount);
+            _idleTimer = _idleTimeToLoseViewers;
+        }
+    }
     public void TriggerEvent(LiveEventType eventType)
     {
+        _idleTimer = _idleTimeToLoseViewers;
         switch (eventType)
         {
             case LiveEventType.SECRET_DOCUMENT:
@@ -190,7 +205,42 @@ public class LiveSystem : MonoBehaviour
         for (int i = 0; i < _chatMessages.Count - startIndex; i++)
         {
             _chatSlots[i].text = _chatMessages[startIndex + i];
+
+            Color textColor = _chatSlots[i].color;
+            textColor.a = 1f;
+            _chatSlots[i].color = textColor;
+
+            StopCoroutine(nameof(ChatPopEffect));
+            StartCoroutine(ChatPopEffect(_chatSlots[i]));
         }
+    }
+
+    private IEnumerator ChatPopEffect(TMP_Text targetText)
+    {
+        RectTransform textTransform = targetText.rectTransform;
+
+        Vector3 originalScale = Vector3.one;
+        Vector3 popScale = Vector3.one * 1.25f;
+
+        float timer = 0f;
+
+        while (timer < 0.15f)
+        {
+            timer += Time.deltaTime * 8f;
+            textTransform.localScale = Vector3.Lerp(originalScale, popScale, timer);
+            yield return null;
+        }
+
+        timer = 0f;
+
+        while (timer < 0.15f)
+        {
+            timer += Time.deltaTime * 8f;
+            textTransform.localScale = Vector3.Lerp(popScale, originalScale, timer);
+            yield return null;
+        }
+
+        textTransform.localScale = originalScale;
     }
 
     private void UpdateAudienceUI(int amount)
@@ -201,6 +251,18 @@ public class LiveSystem : MonoBehaviour
     private string GetRandomMessage(string[] pool)
     {
         return pool[Random.Range(0, pool.Length)];
+    }
+
+    private void RemoveAudience(int amount)
+    {
+        _audienceCount -= amount;
+
+        if (_audienceCount < 0)
+        {
+            _audienceCount = 0;
+        }
+
+        UpdateAudienceUI(_audienceCount);
     }
 
     private void ClearChat()
