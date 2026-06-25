@@ -210,20 +210,23 @@ public class EnemyAI : MonoBehaviour
             if (animator != null)
             {
                 animator.SetBool("Chase", false);
-                animator.SetFloat("Speed", 0f);
+                animator.SetBool("Patrol", false);
             }
 
             Vector3 lookDir = player.position - transform.position;
-
             lookDir.y = 0f;
 
             if (lookDir != Vector3.zero)
             {
-                Quaternion targetRotation = Quaternion.LookRotation(lookDir);
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+                transform.rotation = Quaternion.LookRotation(lookDir);
             }
 
             return;
+        }
+
+        if (animator != null)
+        {
+            animator.SetBool("Chase", true);
         }
 
         agent.speed = chaseSpeed;
