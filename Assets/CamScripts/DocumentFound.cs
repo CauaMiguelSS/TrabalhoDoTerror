@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class DocumentTrigger : MonoBehaviour
 {
-    [SerializeField] private LiveSystem _liveSystem;
+    [SerializeField] private int _objectiveValue = 1;
+
     private bool _used;
 
     private void OnTriggerEnter(Collider other)
@@ -15,6 +16,9 @@ public class DocumentTrigger : MonoBehaviour
 
         _used = true;
 
-        _liveSystem.TriggerEvent(LiveEventType.SECRET_DOCUMENT);
+        ObjectiveSystem.Instance.AddProgress(_objectiveValue);
+        LiveSystem.Instance.TriggerEvent(LiveEventType.SECRET_DOCUMENT);
+
+        Destroy(gameObject);
     }
 }

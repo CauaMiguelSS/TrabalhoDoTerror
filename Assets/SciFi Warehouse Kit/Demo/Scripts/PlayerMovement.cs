@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
     public CharacterController controller;
     public float speed = 8f;
     public float gravity = -9.81f;
@@ -13,56 +12,71 @@ public class PlayerMovement : MonoBehaviour
     public float groundDistance = 0.4f;
     public bool temCartao = false;
     public LayerMask groundMask;
-    Vector3 velocity;
-    bool isGrounded;
 
-    
-     public AudioClip footStepSound;
-     public float footStepDelay;
- 
-     private float nextFootstep = 0;
-    
-    
-       
-    
-    // Update is called once per frame
-    void Update()
+    private Vector3 velocity;
+    private bool isGrounded;
+
+    public AudioClip footStepSound;
+    public float footStepDelay;
+
+    private float nextFootstep = 0f;
+
+    private void Update()
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        isGrounded = Physics.CheckSphere(
+            groundCheck.position,
+            groundDistance,
+            groundMask
+        );
 
-        if (isGrounded && velocity.y <0)
-            {
+        if (isGrounded && velocity.y < 0)
+        {
             velocity.y = -2f;
-            }
+        }
 
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
-        Vector3 motion = transform.right * x + transform.forward * z;
+        Vector3 motion =
+            transform.right * x +
+            transform.forward * z;
+
         controller.Move(motion * speed * Time.deltaTime);
 
-        if(Input.GetButtonDown("Jump") && isGrounded)
+        if (motion.sqrMagnitude > 0.01f)
         {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            LiveSystem.Instance.ResetIdleTimer();
+        }
+
+        if (Input.GetButtonDown("Jump") && isGrounded)
+        {
+            velocity.y = Mathf.Sqrt(
+                jumpHeight * -2f * gravity
+            );
         }
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
 
-         if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.W) && isGrounded)
+        if (motion.sqrMagnitude > 0.01f && isGrounded)
+        {
+            nextFootstep -= Time.deltaTime;
+
+            if (nextFootstep <= 0f)
             {
-             nextFootstep -= Time.deltaTime;
-             if (nextFootstep <= 0) 
-                {
-                 GetComponent<AudioSource>().PlayOneShot(footStepSound, 0.7f);
-                 nextFootstep += footStepDelay;
-                }
-             }
-         }
+                GetComponent<AudioSource>().PlayOneShot(
+                    footStepSound,
+                    0.7f
+                );
+
+                nextFootstep = footStepDelay;
+            }
+        }
+    }
+
     public bool IsRunning()
     {
         return Input.GetKey(KeyCode.LeftShift);
     }
 }
-
 

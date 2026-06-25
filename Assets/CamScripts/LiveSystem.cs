@@ -14,12 +14,17 @@ public enum LiveEventType
 
 public class LiveSystem : MonoBehaviour
 {
+    public static LiveSystem Instance;
+
     [Header("Audience")]
     [SerializeField] private TMP_Text _audienceText;
-    private int _audienceCount = 3;
-    private bool _isUpdatingAudience;
+    [SerializeField] private TMP_Text _audiencePopupText;
+    [SerializeField] private float _popupDuration = 1f;
     [SerializeField] private float _idleTimeToLoseViewers = 6f;
     [SerializeField] private int _viewLossAmount = 2;
+
+    private int _audienceCount = 3;
+    private bool _isUpdatingAudience;
     private float _idleTimer;
 
     [Header("Chat")]
@@ -27,8 +32,9 @@ public class LiveSystem : MonoBehaviour
     [SerializeField] private float _messageDuration = 4f;
 
     private List<string> _chatMessages = new List<string>();
+    private Coroutine _popupRoutine;
 
-    private string[] _documentMessages =
+    private readonly string[] _documentMessages =
     {
         "What is that document?",
         "Read that bro",
@@ -38,7 +44,7 @@ public class LiveSystem : MonoBehaviour
         "What did you find?"
     };
 
-    private string[] _soundMessages =
+    private readonly string[] _soundMessages =
     {
         "Did you hear that?",
         "What was that noise?",
@@ -46,7 +52,7 @@ public class LiveSystem : MonoBehaviour
         "Check behind you"
     };
 
-    private string[] _movementMessages =
+    private readonly string[] _movementMessages =
     {
         "Something moved",
         "I saw that",
@@ -54,7 +60,7 @@ public class LiveSystem : MonoBehaviour
         "WHAT WAS THAT"
     };
 
-    private string[] _robotMessages =
+    private readonly string[] _robotMessages =
     {
         "RUN RUN RUN",
         "DON'T LOOK BACK",
@@ -62,10 +68,17 @@ public class LiveSystem : MonoBehaviour
         "HE'S BEHIND YOU"
     };
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         UpdateAudienceUI(_audienceCount);
         ClearChat();
+
+        _audiencePopupText.text = "";
         _idleTimer = _idleTimeToLoseViewers;
     }
 
@@ -79,9 +92,16 @@ public class LiveSystem : MonoBehaviour
             _idleTimer = _idleTimeToLoseViewers;
         }
     }
-    public void TriggerEvent(LiveEventType eventType)
+
+    public void ResetIdleTimer()
     {
         _idleTimer = _idleTimeToLoseViewers;
+    }
+
+    public void TriggerEvent(LiveEventType eventType)
+    {
+        ResetIdleTimer();
+
         switch (eventType)
         {
             case LiveEventType.SECRET_DOCUMENT:
@@ -108,10 +128,26 @@ public class LiveSystem : MonoBehaviour
 
     private void AddAudience(int amount)
     {
+        ShowAudiencePopup(amount);
+
         if (_isUpdatingAudience)
             return;
 
         StartCoroutine(UpdateAudienceRoutine(amount));
+    }
+
+    private void RemoveAudience(int amount)
+    {
+        ShowAudiencePopup(-amount);
+
+        _audienceCount -= amount;
+
+        if (_audienceCount < 0)
+        {
+            _audienceCount = 0;
+        }
+
+        UpdateAudienceUI(_audienceCount);
     }
 
     private IEnumerator UpdateAudienceRoutine(int amount)
@@ -126,7 +162,9 @@ public class LiveSystem : MonoBehaviour
             visualAudience += Random.Range(1, 8);
 
             if (visualAudience > targetAudience)
+            {
                 visualAudience = targetAudience;
+            }
 
             UpdateAudienceUI(visualAudience + Random.Range(-2, 3));
 
@@ -179,18 +217,8 @@ public class LiveSystem : MonoBehaviour
             yield return null;
         }
 
-        if (_chatMessages.Contains(message))
-        {
-            _chatMessages.Remove(message);
-            UpdateChatUI();
-        }
-
-        for (int i = 0; i < _chatSlots.Length; i++)
-        {
-            Color resetColor = _chatSlots[i].color;
-            resetColor.a = 1f;
-            _chatSlots[i].color = resetColor;
-        }
+        _chatMessages.Remove(message);
+        UpdateChatUI();
     }
 
     private void UpdateChatUI()
@@ -210,7 +238,6 @@ public class LiveSystem : MonoBehaviour
             textColor.a = 1f;
             _chatSlots[i].color = textColor;
 
-            StopCoroutine(nameof(ChatPopEffect));
             StartCoroutine(ChatPopEffect(_chatSlots[i]));
         }
     }
@@ -220,11 +247,11 @@ public class LiveSystem : MonoBehaviour
         RectTransform textTransform = targetText.rectTransform;
 
         Vector3 originalScale = Vector3.one;
-        Vector3 popScale = Vector3.one * 1.25f;
+        Vector3 popScale = Vector3.one * 1.15f;
 
         float timer = 0f;
 
-        while (timer < 0.15f)
+        while (timer < 0.12f)
         {
             timer += Time.deltaTime * 8f;
             textTransform.localScale = Vector3.Lerp(originalScale, popScale, timer);
@@ -233,7 +260,7 @@ public class LiveSystem : MonoBehaviour
 
         timer = 0f;
 
-        while (timer < 0.15f)
+        while (timer < 0.12f)
         {
             timer += Time.deltaTime * 8f;
             textTransform.localScale = Vector3.Lerp(popScale, originalScale, timer);
@@ -241,6 +268,54 @@ public class LiveSystem : MonoBehaviour
         }
 
         textTransform.localScale = originalScale;
+    }
+
+    private void ShowAudiencePopup(int amount)
+    {
+        if (_popupRoutine != null)
+        {
+            StopCoroutine(_popupRoutine);
+        }
+
+        _popupRoutine = StartCoroutine(AudiencePopupRoutine(amount));
+    }
+
+    private IEnumerator AudiencePopupRoutine(int amount)
+    {
+        RectTransform popupTransform = _audiencePopupText.rectTransform;
+
+        Vector3 startPosition = popupTransform.localPosition;
+        Vector3 targetPosition = startPosition + Vector3.up * 20f;
+
+        Color popupColor = _audiencePopupText.color;
+
+        popupColor.a = 1f;
+        _audiencePopupText.color = popupColor;
+
+        _audiencePopupText.text = amount > 0
+            ? "+" + amount
+            : amount.ToString();
+
+        float timer = 0f;
+
+        while (timer < _popupDuration)
+        {
+            timer += Time.deltaTime;
+
+            popupTransform.localPosition = Vector3.Lerp(
+                startPosition,
+                targetPosition,
+                timer / _popupDuration
+            );
+
+            popupColor.a = Mathf.Lerp(1f, 0f, timer / _popupDuration);
+            _audiencePopupText.color = popupColor;
+
+            yield return null;
+        }
+
+        popupTransform.localPosition = startPosition;
+        _audiencePopupText.text = "";
     }
 
     private void UpdateAudienceUI(int amount)
@@ -251,18 +326,6 @@ public class LiveSystem : MonoBehaviour
     private string GetRandomMessage(string[] pool)
     {
         return pool[Random.Range(0, pool.Length)];
-    }
-
-    private void RemoveAudience(int amount)
-    {
-        _audienceCount -= amount;
-
-        if (_audienceCount < 0)
-        {
-            _audienceCount = 0;
-        }
-
-        UpdateAudienceUI(_audienceCount);
     }
 
     private void ClearChat()
