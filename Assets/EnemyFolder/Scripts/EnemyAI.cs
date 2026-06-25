@@ -71,16 +71,8 @@ public class EnemyAI : MonoBehaviour
         if (agent == null)
             agent = GetComponent<NavMeshAgent>();
 
-        if (patrolPoints.Length > 0)
-        {
-            patrolIndex = Random.Range(0, patrolPoints.Length);
-            agent.SetDestination(patrolPoints[patrolIndex].position);
-        }
-        if (agent == null)
-            agent = GetComponent<NavMeshAgent>();
-
         if (animator == null)
-            animator = GetComponent <Animator>();
+            animator = GetComponent<Animator>();
 
         if (patrolPoints.Length > 0)
         {
@@ -215,14 +207,14 @@ public class EnemyAI : MonoBehaviour
         {
             agent.isStopped = true;
 
-            Vector3 lookDir = player.position - transform.position;
-
-            lookDir.y = 0f;
-
-            if (lookDir != Vector3.zero)
+            if (animator != null)
             {
-                transform.rotation = Quaternion.LookRotation(lookDir);
+                animator.SetBool("Chase", false);
+                animator.SetFloat("Speed", 0f);
             }
+
+            // TESTE:
+            // removemos a rotação completamente
 
             return;
         }
@@ -237,22 +229,15 @@ public class EnemyAI : MonoBehaviour
         Vector3 eye = transform.position + Vector3.up * 1.6f;
         Vector3 dir = (player.position - eye).normalized;
 
-        float distanceToPlayer =
-            Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-        float angle =
-            Vector3.Angle(transform.forward, dir);
+        float angle = Vector3.Angle(transform.forward, dir);
 
         bool canSeePlayer = false;
 
-        if (distanceToPlayer <= viewDistance &&
-            angle <= viewAngle * 0.5f)
+        if (distanceToPlayer <= viewDistance && angle <= viewAngle * 0.5f)
         {
-            if (!Physics.Raycast(
-                eye,
-                dir,
-                distanceToPlayer,
-                obstacleMask))
+            if (!Physics.Raycast(eye, dir, distanceToPlayer, obstacleMask))
             {
                 canSeePlayer = true;
             }
@@ -265,7 +250,6 @@ public class EnemyAI : MonoBehaviour
             agent.isStopped = false;
 
             state = State.Investigate;
-            
         }
 
         if (heightDifference > 2f)
@@ -287,8 +271,7 @@ public class EnemyAI : MonoBehaviour
 
         agent.SetDestination(lastSeenPosition);
 
-        if (!agent.pathPending &&
-            agent.remainingDistance <= 1f)
+        if (!agent.pathPending && agent.remainingDistance <= 1f)
         {
             investigateTimer -= Time.deltaTime;
 
@@ -298,40 +281,28 @@ public class EnemyAI : MonoBehaviour
 
                 if (patrolPoints.Length > 0)
                 {
-                    patrolIndex =
-                        Random.Range(
-                            0,
-                            patrolPoints.Length);
-
-                    agent.SetDestination(
-                        patrolPoints[patrolIndex].position);
+                    patrolIndex = Random.Range(0,patrolPoints.Length);
+                    agent.SetDestination(patrolPoints[patrolIndex].position);
                 }
             }
         }
     }
     bool IsBeingLookedAt()
     {
-        Vector3 eyePos =
-            playerCamera.position;
-
-        Vector3 dirToEnemy =
-            (transform.position - eyePos).normalized;
-
-        float angle =
-            Vector3.Angle(playerCamera.forward, dirToEnemy);
+        Vector3 eyePos = playerCamera.position;
+        Vector3 dirToEnemy = (transform.position - eyePos).normalized;
+        float angle = Vector3.Angle(playerCamera.forward, dirToEnemy);
 
         if (angle > 45f)
             return false;
 
-        float distance =
-            Vector3.Distance(eyePos, transform.position);
+        float distance = Vector3.Distance(eyePos, transform.position);
 
         if (Physics.Raycast(eyePos, dirToEnemy, out RaycastHit hit, distance))
         {
             if (hit.transform == transform)
                 return true;
         }
-
         return false;
     }
 
@@ -341,6 +312,15 @@ public class EnemyAI : MonoBehaviour
         {
             agent.isStopped = true;
             agent.ResetPath();
+        }
+
+        if (animator != null)
+        {
+            animator.SetBool("Patrol", false);
+            animator.SetBool("Chase", false);
+            animator.SetFloat("Speed", 0f);
+
+            animator.enabled = false;
         }
 
         enabled = false;

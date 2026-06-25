@@ -1825,6 +1825,14 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.28
       objectReference: {fileID: 0}
+    - target: {fileID: 3092059051551251231, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 3092059051551251231, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.53
+      objectReference: {fileID: 0}
     - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: player
       value: 
@@ -43208,7 +43216,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: d7369c0e44c4070478151d5e6dcf492a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
