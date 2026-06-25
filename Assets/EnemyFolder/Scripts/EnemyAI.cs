@@ -66,6 +66,7 @@ public class EnemyAI : MonoBehaviour
     [Header("Hearing")]
     public float hearingRange = 8f;
 
+    private bool chaseEventTriggered;
     void Start()
     {
         if (agent == null)
@@ -143,6 +144,15 @@ public class EnemyAI : MonoBehaviour
         {
             lastSeenPosition = player.position;
             state = State.Chase;
+
+            if (!chaseEventTriggered)
+            {
+                chaseEventTriggered = true;
+
+                LiveSystem.Instance.TriggerEvent(
+                    LiveEventType.ROBOT_CHASE
+                );
+            }
         }
     }
 
@@ -388,27 +398,16 @@ public class EnemyAI : MonoBehaviour
             audioSource.Play();
         }
 
-        float distance =
-            Vector3.Distance(
-                transform.position,
-                player.position);
+        float distance = Vector3.Distance(transform.position, player.position);
 
-        float t =
-            Mathf.Clamp01(
-                1f - distance / maxSoundDistance);
+        float t = Mathf.Clamp01(1f - distance / maxSoundDistance);
 
-        audioSource.volume =
-            Mathf.Lerp(
-                minVolume,
-                maxVolume,
-                t);
+        audioSource.volume = Mathf.Lerp(minVolume, maxVolume, t);
     }
     public void HearNoise(Vector3 noisePosition)
     {
         float dist =
-            Vector3.Distance(
-                transform.position,
-                noisePosition);
+            Vector3.Distance(transform.position, noisePosition);
 
         if (dist > hearingRange)
             return;

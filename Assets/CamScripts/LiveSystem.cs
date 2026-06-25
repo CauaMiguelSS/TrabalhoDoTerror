@@ -7,9 +7,12 @@ public enum LiveEventType
 {
     NONE,
     SECRET_DOCUMENT,
+    RARE_DOCUMENT,
+    CLASSIFIED_DOCUMENT,
     STRANGE_SOUND,
     STRANGE_MOVEMENT,
-    ROBOT_CHASE
+    ROBOT_CHASE,
+    DEAD_BODY
 }
 
 public class LiveSystem : MonoBehaviour
@@ -65,7 +68,9 @@ public class LiveSystem : MonoBehaviour
         "RUN RUN RUN",
         "DON'T LOOK BACK",
         "MOVE",
-        "HE'S BEHIND YOU"
+        "HE'S BEHIND YOU",
+        "LMAO",
+        "OMG"
     };
 
     private void Awake()
@@ -123,6 +128,22 @@ public class LiveSystem : MonoBehaviour
                 AddAudience(100);
                 AddChatMessage(GetRandomMessage(_robotMessages));
                 break;
+
+            case LiveEventType.RARE_DOCUMENT:
+                AddAudience(75);
+                AddChatMessage("That's important");
+                break;
+
+            case LiveEventType.CLASSIFIED_DOCUMENT:
+                AddAudience(150);
+                AddChatMessage("NO WAY");
+                break;
+
+            case LiveEventType.DEAD_BODY:
+                AddAudience(300);
+                AddChatMessage("IS THAT A BODY?");
+                break;
+
         }
     }
 

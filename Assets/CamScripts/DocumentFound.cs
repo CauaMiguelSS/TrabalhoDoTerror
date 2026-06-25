@@ -1,23 +1,29 @@
 using UnityEngine;
 
-public class DocumentTrigger : MonoBehaviour
+public class DocumentFound : MonoBehaviour
 {
-    [SerializeField] private int _objectiveValue = 1;
+    [SerializeField] private int objectiveValue = 1;
 
-    private bool _used;
+    [Header("Live Event")]
+    [SerializeField]
+    private LiveEventType eventType =
+        LiveEventType.SECRET_DOCUMENT;
+
+    private bool used;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (_used)
+        if (used)
             return;
 
         if (!other.CompareTag("Player"))
             return;
 
-        _used = true;
+        used = true;
 
-        ObjectiveSystem.Instance.AddProgress(_objectiveValue);
-        LiveSystem.Instance.TriggerEvent(LiveEventType.SECRET_DOCUMENT);
+        ObjectiveSystem.Instance.AddProgress(objectiveValue);
+
+        LiveSystem.Instance.TriggerEvent(eventType);
 
         Destroy(gameObject);
     }

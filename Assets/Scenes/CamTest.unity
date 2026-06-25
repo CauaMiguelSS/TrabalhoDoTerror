@@ -2443,7 +2443,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18807e22e2d849446a8404181e923a6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DocumentTrigger
-  _objectiveValue: 1
+  objectiveValue: 1
+  eventType: 1
 --- !u!65 &1380284310
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3098,7 +3099,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18807e22e2d849446a8404181e923a6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DocumentTrigger
-  _objectiveValue: 1
+  objectiveValue: 1
+  eventType: 1
 --- !u!65 &2058875700
 BoxCollider:
   m_ObjectHideFlags: 0
