@@ -213,8 +213,15 @@ public class EnemyAI : MonoBehaviour
                 animator.SetFloat("Speed", 0f);
             }
 
-            // TESTE:
-            // removemos a rotação completamente
+            Vector3 lookDir = player.position - transform.position;
+
+            lookDir.y = 0f;
+
+            if (lookDir != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            }
 
             return;
         }
