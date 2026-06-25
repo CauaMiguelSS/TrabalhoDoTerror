@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Dialogue : MonoBehaviour
 {
@@ -20,11 +21,12 @@ public class Dialogue : MonoBehaviour
             return;
 
         dialogueText.SetActive(true);
-        Invoke("HideDialogue", 3f);
+        StartCoroutine(HideDialogue());
     }
 
-    void HideDialogue()
+    IEnumerator HideDialogue()
     {
+        yield return new WaitForSeconds(3f);
         dialogueText.SetActive(false);
     }
 }
