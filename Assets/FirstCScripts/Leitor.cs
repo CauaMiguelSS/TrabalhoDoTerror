@@ -17,7 +17,12 @@ public class Leitor : MonoBehaviour, IInteractable
     }
     public void Interact()
     {
-        _target.Interact();
+        PlayerMovement jogador = FindFirstObjectByType<PlayerMovement>();
+
+        if (jogador != null && jogador.temCartao)
+        {
+            porta.open = true;
+        }
     }
 
     private void Start()

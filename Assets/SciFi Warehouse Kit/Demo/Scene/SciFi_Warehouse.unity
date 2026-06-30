@@ -1882,7 +1882,7 @@ PrefabInstance:
       objectReference: {fileID: 963194228}
     - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: proximityRange
-      value: 2.3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: patrolPoints.Array.size
