@@ -149,9 +149,7 @@ public class EnemyAI : MonoBehaviour
             {
                 chaseEventTriggered = true;
 
-                LiveSystem.Instance.TriggerEvent(
-                    LiveEventType.ROBOT_CHASE
-                );
+                LiveSystem.Instance.TriggerEvent(LiveEventType.ROBOT_CHASE);
             }
         }
     }
