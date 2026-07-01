@@ -6,8 +6,7 @@ public class DocumentFound : MonoBehaviour
 
     [Header("Live Event")]
     [SerializeField]
-    private LiveEventType eventType =
-        LiveEventType.SECRET_DOCUMENT;
+    private LiveEventType eventType = LiveEventType.SECRET_DOCUMENT;
 
     private bool used;
 
@@ -23,7 +22,7 @@ public class DocumentFound : MonoBehaviour
 
         ObjectiveSystem.Instance.AddProgress(objectiveValue);
 
-        LiveSystem.Instance.TriggerEvent(eventType);
+        LiveSystem.Instance.TriggerEvent(LiveEventType.SECRET_DOCUMENT);
 
         Destroy(gameObject);
     }

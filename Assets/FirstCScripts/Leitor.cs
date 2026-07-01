@@ -23,6 +23,7 @@ public class Leitor : MonoBehaviour, IInteractable
         {
             porta.open = true;
         }
+        GetComponent<NoiseSource>().MakeNoise();
     }
 
     private void Start()

@@ -1813,6 +1813,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 963194228}
     - target: {fileID: 439456397154621842, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+      propertyPath: jumpscareSound
+      value: 
+      objectReference: {fileID: 1294598799}
+    - target: {fileID: 439456397154621842, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: playerScripts.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -1880,6 +1884,10 @@ PrefabInstance:
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 963194228}
+    - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+      propertyPath: stopDistance
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4852631832180176922, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: proximityRange
       value: 1
@@ -1962,15 +1970,15 @@ PrefabInstance:
       objectReference: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 6351587936800397753, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 4.059
+      value: 63.86
       objectReference: {fileID: 0}
     - target: {fileID: 6351587936800397753, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.55
+      value: 10.53
       objectReference: {fileID: 0}
     - target: {fileID: 6351587936800397753, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 18.915
+      value: -8.8
       objectReference: {fileID: 0}
     - target: {fileID: 6351587936800397753, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2029,6 +2037,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4859675640735019471, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1897414461}
+    - targetCorrespondingSourceObject: {fileID: 5760124626894331685, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1294598799}
   m_SourcePrefab: {fileID: 100100000, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
 --- !u!1 &100467035
 GameObject:
@@ -29785,6 +29796,108 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1453485022173259434, guid: eb4b38db67a56dc469a2c2aafcc36add, type: 3}
   m_PrefabInstance: {fileID: 1294156431}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1294598796 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5760124626894331685, guid: 10b8792d1b72c804c9898c69e938f883, type: 3}
+  m_PrefabInstance: {fileID: 94921490}
+  m_PrefabAsset: {fileID: 0}
+--- !u!82 &1294598799
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1294598796}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 8300000, guid: 00883f818b08c1e48b7e78ee7bf21729, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.5
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1298236139
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31942,6 +32055,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100000, guid: 672113ba13572fe4da40df2796bc3611, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1370855740}
+    - targetCorrespondingSourceObject: {fileID: 100000, guid: 672113ba13572fe4da40df2796bc3611, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1370855744}
   m_SourcePrefab: {fileID: 100100000, guid: 672113ba13572fe4da40df2796bc3611, type: 3}
 --- !u!1 &1370855731 stripped
 GameObject:
@@ -32000,6 +32116,19 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &1370855744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1370855731}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0ce65d38f7ed7b4483fb266543511ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NoiseSource
+  callEnemy: 1
 --- !u!1001 &1378506218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41105,6 +41234,122 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: _maxMessageDelay
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: _minMessageDelay
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: _panicMessages.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: _normalMessages.Array.size
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[0]'
+      value: LMAO!!!!
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[1]'
+      value: OMG!!!
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[2]'
+      value: GET OUT!!!
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[3]'
+      value: HOLLY MOLLY!!!!
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[4]'
+      value: WHAT??!!!!
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[5]'
+      value: its fake haha
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[6]'
+      value: Calm down guys, it's fake.
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[7]'
+      value: I don't believe
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[8]'
+      value: RUN!!!!!!
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_panicMessages.Array.data[9]'
+      value: I warned you.
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[0]'
+      value: Why are you at the factory?
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[1]'
+      value: Who are you again?
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[2]'
+      value: That's scary
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[3]'
+      value: You're brave
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[4]'
+      value: Get out of there, man
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[5]'
+      value: How did you get in?
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[6]'
+      value: What is he doing?
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[7]'
+      value: The guys want him to die.
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[8]'
+      value: Go ahead, I dare you.
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[9]'
+      value: OMG
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[10]'
+      value: I remember this place
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[11]'
+      value: This guy is crazy lol
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[12]'
+      value: How are you going to get out of there? lol
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[13]'
+      value: LOL
+      objectReference: {fileID: 0}
+    - target: {fileID: 770563769040990714, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: '_normalMessages.Array.data[14]'
+      value: I can't even look
+      objectReference: {fileID: 0}
     - target: {fileID: 849573977618156601, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -43646,7 +43891,13 @@ Animator:
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
+    'mixamorig:LeftHandThumb2'\n\tTransform 'mixamorig:LeftHandIndex1'\n\tTransform
+    'mixamorig:LeftHandPinky2'\n\tTransform 'mixamorig:RightHandRing2'\n\tTransform
+    'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:LeftHandThumb3'\n\tTransform
+    'mixamorig:RightArm'\n\tand more ...\n\tFrom animation clip 'mixamo.com'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0

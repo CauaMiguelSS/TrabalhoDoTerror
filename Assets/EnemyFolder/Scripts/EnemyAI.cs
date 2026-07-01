@@ -9,7 +9,6 @@ public class EnemyAI : MonoBehaviour
     public enum State {Patrol, Chase, Investigate}
 
     [Header("Audio")]
-
     public AudioSource audioSource;
 
     public AudioClip patrolSound;
@@ -53,6 +52,8 @@ public class EnemyAI : MonoBehaviour
     private int patrolIndex;
     private float waitTimer;
     private bool jumpscareTriggered;
+    private bool freezePlayed = false;
+    private bool isFrozen = false;
 
     private Vector3 lastSeenPosition;
     private float investigateTimer;
@@ -90,8 +91,16 @@ public class EnemyAI : MonoBehaviour
             return;
         if (animator != null)
         {
-            animator.SetFloat("Speed", agent.velocity.magnitude);
+            float speed = agent.velocity.magnitude;
+
+            if (!agent.pathPending && agent.remainingDistance < 0.3f)
+            {
+                speed = 0f;
+            }
+
+            animator.SetFloat("Speed", speed);
         }
+
         FirstPersonController controller = player.GetComponent<FirstPersonController>();
 
         if (controller != null)
@@ -214,23 +223,29 @@ public class EnemyAI : MonoBehaviour
         if (IsBeingLookedAt())
         {
             agent.isStopped = true;
+            agent.velocity = Vector3.zero;
 
-            if (animator != null)
+            if (!freezePlayed)
             {
-                animator.SetBool("Chase", false);
-                animator.SetBool("Patrol", false);
-            }
+                freezePlayed = true;
+                isFrozen = true;
 
-            Vector3 lookDir = player.position - transform.position;
-            lookDir.y = 0f;
-
-            if (lookDir != Vector3.zero)
-            {
-                transform.rotation = Quaternion.LookRotation(lookDir);
+                animator.speed = 1f;
+                animator.SetTrigger("Freeze");
             }
 
             return;
         }
+        if (isFrozen)
+        {
+            isFrozen = false;
+            freezePlayed = false;
+
+            animator.speed = 1f;
+        }
+
+        agent.speed = chaseSpeed;
+        agent.isStopped = false;
 
         if (animator != null)
         {
@@ -239,6 +254,8 @@ public class EnemyAI : MonoBehaviour
 
         agent.speed = chaseSpeed;
         agent.isStopped = false;
+        agent.updatePosition = true;
+        agent.updateRotation = true;
 
         agent.SetDestination(player.position);
 
@@ -266,6 +283,8 @@ public class EnemyAI : MonoBehaviour
             investigateTimer = investigateTime;
 
             agent.isStopped = false;
+
+            chaseEventTriggered = false;
 
             state = State.Investigate;
         }
@@ -329,16 +348,13 @@ public class EnemyAI : MonoBehaviour
         if (agent != null)
         {
             agent.isStopped = true;
+            agent.velocity = Vector3.zero;
             agent.ResetPath();
         }
 
         if (animator != null)
         {
-            animator.SetBool("Patrol", false);
-            animator.SetBool("Chase", false);
-            animator.SetFloat("Speed", 0f);
-
-            animator.enabled = false;
+            animator.SetTrigger("Freeze");
         }
 
         enabled = false;
@@ -415,5 +431,9 @@ public class EnemyAI : MonoBehaviour
         investigateTimer = investigateTime;
 
         state = State.Investigate;
+    }
+    public void StopFreezeAnimation()
+    {
+        animator.speed = 0f;
     }
 }

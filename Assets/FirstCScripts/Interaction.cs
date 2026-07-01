@@ -26,10 +26,10 @@ public class Interaction : MonoBehaviour
                     _target.ShowOutline();
                 }
 
-                // Clique esquerdo do mouse
                 if (Mouse.current.leftButton.wasPressedThisFrame)
                 {
                     _target.Interact();
+                    LiveSystem.Instance.TriggerEvent(LiveEventType.SECRET_DOCUMENT);
                 }
             }
             else

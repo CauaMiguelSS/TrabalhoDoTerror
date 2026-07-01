@@ -18,6 +18,11 @@ public enum LiveEventType
 public class LiveSystem : MonoBehaviour
 {
     public static LiveSystem Instance;
+    [Header("Victory")]
+    [SerializeField] private int _viewerGoal = 1000;
+    [SerializeField] private GameObject _victoryPanel;
+
+    private bool _victoryTriggered;
 
     [Header("Audience")]
     [SerializeField] private TMP_Text _audienceText;
@@ -30,9 +35,14 @@ public class LiveSystem : MonoBehaviour
     private bool _isUpdatingAudience;
     private float _idleTimer;
 
-    [Header("Chat")]
+    [Header("Event Chat")]
     [SerializeField] private TMP_Text[] _chatSlots;
     [SerializeField] private float _messageDuration = 4f;
+
+    [Header("Normal Chat")]
+    [SerializeField] private string[] _normalMessages;
+    [SerializeField] private float _minMessageDelay = 5f;
+    [SerializeField] private float _maxMessageDelay = 10f;
 
     private List<string> _chatMessages = new List<string>();
     private Coroutine _popupRoutine;
@@ -63,21 +73,63 @@ public class LiveSystem : MonoBehaviour
         "WHAT WAS THAT"
     };
 
-    private readonly string[] _robotMessages =
-    {
-        "RUN RUN RUN",
-        "DON'T LOOK BACK",
-        "MOVE",
-        "HE'S BEHIND YOU",
-        "LMAO",
-        "OMG"
-    };
+    [Header("Panic Chat")]
+    [SerializeField] private string[] _panicMessages;
+
+    [SerializeField] private float _panicMessageDelay = 0.3f;
+
+    [SerializeField] private float _panicDuration = 8f;
 
     private void Awake()
     {
         Instance = this;
     }
+    public float GetChatDelay()
+    {
+        if (_audienceCount >= 300)
+            return Random.Range(1f, 3f);
 
+        if (_audienceCount >= 100)
+            return Random.Range(2f, 5f);
+
+        if (_audienceCount >= 50)
+            return Random.Range(4f, 7f);
+
+        if (_audienceCount >= 10)
+            return Random.Range(6f, 9f);
+
+        return Random.Range(8f, 12f);
+    }
+    private IEnumerator NormalChatRoutine()
+    {
+        while (true)
+        {
+            float delay = GetChatDelay();
+
+            yield return new WaitForSeconds(delay);
+
+            if (_normalMessages.Length > 0)
+            {
+                AddChatMessage(GetRandomMessage(_normalMessages));
+            }
+        }
+    }
+    private IEnumerator PanicRoutine()
+    {
+        float timer = 0f;
+
+        while (timer < _panicDuration)
+        {
+            if (_panicMessages.Length > 0)
+            {
+                AddChatMessage(GetRandomMessage(_panicMessages));
+            }
+
+            yield return new WaitForSeconds(_panicMessageDelay);
+
+            timer += _panicMessageDelay;
+        }
+    }
     private void Start()
     {
         UpdateAudienceUI(_audienceCount);
@@ -85,6 +137,13 @@ public class LiveSystem : MonoBehaviour
 
         _audiencePopupText.text = "";
         _idleTimer = _idleTimeToLoseViewers;
+
+        StartCoroutine(NormalChatRoutine());
+        
+        if (_victoryPanel != null)
+        {
+            _victoryPanel.SetActive(false);
+        }
     }
 
     private void Update()
@@ -126,7 +185,7 @@ public class LiveSystem : MonoBehaviour
 
             case LiveEventType.ROBOT_CHASE:
                 AddAudience(100);
-                AddChatMessage(GetRandomMessage(_robotMessages));
+                StartCoroutine(PanicRoutine());
                 break;
 
             case LiveEventType.RARE_DOCUMENT:
@@ -189,7 +248,7 @@ public class LiveSystem : MonoBehaviour
 
             UpdateAudienceUI(visualAudience + Random.Range(-2, 3));
 
-            yield return new WaitForSeconds(0.05f);
+            yield return new WaitForSeconds(0.02f);
         }
 
         _audienceCount = targetAudience;
@@ -244,22 +303,21 @@ public class LiveSystem : MonoBehaviour
 
     private void UpdateChatUI()
     {
-        for (int i = 0; i < _chatSlots.Length; i++)
-        {
-            _chatSlots[i].text = "";
-        }
-
         int startIndex = Mathf.Max(0, _chatMessages.Count - _chatSlots.Length);
 
-        for (int i = 0; i < _chatMessages.Count - startIndex; i++)
+        int slot = _chatSlots.Length - 1;
+
+        for (int i = _chatMessages.Count - 1; i >= startIndex; i--)
         {
-            _chatSlots[i].text = _chatMessages[startIndex + i];
+            _chatSlots[slot].text = _chatMessages[i];
 
-            Color textColor = _chatSlots[i].color;
+            Color textColor = _chatSlots[slot].color;
             textColor.a = 1f;
-            _chatSlots[i].color = textColor;
+            _chatSlots[slot].color = textColor;
 
-            StartCoroutine(ChatPopEffect(_chatSlots[i]));
+            StartCoroutine(ChatPopEffect(_chatSlots[slot]));
+
+            slot--;
         }
     }
 
@@ -323,12 +381,7 @@ public class LiveSystem : MonoBehaviour
         {
             timer += Time.deltaTime;
 
-            popupTransform.localPosition = Vector3.Lerp(
-                startPosition,
-                targetPosition,
-                timer / _popupDuration
-            );
-
+            popupTransform.localPosition = Vector3.Lerp(startPosition, targetPosition, timer / _popupDuration);
             popupColor.a = Mathf.Lerp(1f, 0f, timer / _popupDuration);
             _audiencePopupText.color = popupColor;
 
@@ -342,6 +395,11 @@ public class LiveSystem : MonoBehaviour
     private void UpdateAudienceUI(int amount)
     {
         _audienceText.text = amount.ToString();
+
+        if (!_victoryTriggered && amount >= _viewerGoal)
+        {
+            Victory();
+        }
     }
 
     private string GetRandomMessage(string[] pool)
@@ -355,5 +413,17 @@ public class LiveSystem : MonoBehaviour
         {
             _chatSlots[i].text = "";
         }
+    }
+    private void Victory()
+    {
+        _victoryTriggered = true;
+
+        Time.timeScale = 0f;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        if (_victoryPanel != null)
+            _victoryPanel.SetActive(true);
     }
 }
