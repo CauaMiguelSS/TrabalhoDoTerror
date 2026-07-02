@@ -19,7 +19,6 @@ public class ObjectiveSystem : MonoBehaviour
     [SerializeField] private TMP_Text _objectiveText;
     [SerializeField] private Scrollbar _progressBar;
     [SerializeField] private float _fillSpeed = 0.5f;
-    [SerializeField] private LiveSystem _liveSystem;
 
     [Header("Objectives")]
     [SerializeField] private List<ObjectiveData> _objectives = new List<ObjectiveData>();
@@ -42,11 +41,8 @@ public class ObjectiveSystem : MonoBehaviour
     {
         if (_currentObjectiveIndex >= _objectives.Count)
         {
-            _objectiveText.text = "Reach 1000 Viewers";
+            _objectiveText.text = "All objectives completed";
             _progressBar.size = 1f;
-
-            CheckVictory();
-
             return;
         }
 
@@ -113,18 +109,5 @@ public class ObjectiveSystem : MonoBehaviour
         _currentObjectiveIndex++;
 
         LoadCurrentObjective();
-    }
-    public void CheckVictory()
-    {
-        if (_currentObjectiveIndex < _objectives.Count)
-            return;
-
-        if (_liveSystem == null)
-            return;
-
-        if (_liveSystem.CurrentAudience >= 1000)
-        {
-            _liveSystem.Victory();
-        }
     }
 }
