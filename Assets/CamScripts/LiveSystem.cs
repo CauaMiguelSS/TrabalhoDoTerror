@@ -32,6 +32,7 @@ public class LiveSystem : MonoBehaviour
     [SerializeField] private int _viewLossAmount = 2;
 
     private int _audienceCount = 3;
+    public int CurrentAudience => _audienceCount;
     private bool _isUpdatingAudience;
     private float _idleTimer;
 
@@ -394,12 +395,8 @@ public class LiveSystem : MonoBehaviour
 
     private void UpdateAudienceUI(int amount)
     {
-        _audienceText.text = amount.ToString();
-
-        if (!_victoryTriggered && amount >= _viewerGoal)
-        {
-            Victory();
-        }
+        if (_audienceText != null)
+            _audienceText.text = amount.ToString();
     }
 
     private string GetRandomMessage(string[] pool)
@@ -414,7 +411,7 @@ public class LiveSystem : MonoBehaviour
             _chatSlots[i].text = "";
         }
     }
-    private void Victory()
+    public void Victory()
     {
         _victoryTriggered = true;
 

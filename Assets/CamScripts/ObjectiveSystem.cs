@@ -27,6 +27,9 @@ public class ObjectiveSystem : MonoBehaviour
     private int _currentProgress;
     private Coroutine _progressRoutine;
 
+    // NOVA VARIÁVEL: Armazena a quantidade de documentos coletados no jogo
+    private int _documentsFound = 0;
+
     private void Awake()
     {
         Instance = this;
@@ -68,8 +71,7 @@ public class ObjectiveSystem : MonoBehaviour
             _currentProgress = currentObjective.TargetAmount;
         }
 
-        float targetValue =
-            (float)_currentProgress / currentObjective.TargetAmount;
+        float targetValue = (float)_currentProgress / currentObjective.TargetAmount;
 
         if (_progressRoutine != null)
         {
@@ -109,5 +111,19 @@ public class ObjectiveSystem : MonoBehaviour
         _currentObjectiveIndex++;
 
         LoadCurrentObjective();
+    }
+
+    public void RegisterDocumentFound()
+    {
+        _documentsFound++;
+        CheckVictory();
+    }
+
+    public void CheckVictory()
+    {
+        if (_documentsFound >= 3 && LiveSystem.Instance.CurrentAudience >= 1000)
+        {
+            LiveSystem.Instance.Victory();
+        }
     }
 }
