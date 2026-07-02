@@ -20,7 +20,7 @@ public class LiveSystem : MonoBehaviour
     public static LiveSystem Instance { get; private set; }
 
     [Header("Victory")]
-    [SerializeField] private int _viewerGoal = 1000;
+    [SerializeField] private int _viewerGoal = 100000;
     [SerializeField] private GameObject _victoryPanel;
     private bool _victoryTriggered;
 
