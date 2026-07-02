@@ -29,7 +29,6 @@ public class Interaction : MonoBehaviour
                 if (Mouse.current.leftButton.wasPressedThisFrame)
                 {
                     _target.Interact();
-                    LiveSystem.Instance.TriggerEvent(LiveEventType.SECRET_DOCUMENT);
                 }
             }
             else
