@@ -41378,6 +41378,14 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3966886208574174916, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4761545963396919298, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6454710337629575043, guid: d6acb468b2e59954fbddc2b8a48a75ce, type: 3}
       propertyPath: m_fontColor.b
       value: 1
