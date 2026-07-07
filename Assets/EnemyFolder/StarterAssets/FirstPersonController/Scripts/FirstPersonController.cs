@@ -14,6 +14,8 @@ namespace StarterAssets
 		[Header("Player")]
 		[Tooltip("Move speed of the character in m/s")]
 		public float MoveSpeed = 4.0f;
+		private bool _canControl = true;
+
 		[Tooltip("Sprint speed of the character in m/s")]
 		public float SprintSpeed = 6.0f;
 		[Tooltip("Rotation speed of the character")]
@@ -64,7 +66,7 @@ namespace StarterAssets
 		private float _jumpTimeoutDelta;
 		private float _fallTimeoutDelta;
 
-	
+
 #if ENABLE_INPUT_SYSTEM
 		private PlayerInput _playerInput;
 #endif
@@ -78,11 +80,11 @@ namespace StarterAssets
 		{
 			get
 			{
-				#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM
 				return _playerInput.currentControlScheme == "KeyboardMouse";
-				#else
+#else
 				return false;
-				#endif
+#endif
 			}
 		}
 
@@ -95,26 +97,29 @@ namespace StarterAssets
 			}
 		}
 
-        private void Start()
-        {
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+		private void Start()
+		{
+			Cursor.visible = false;
+			Cursor.lockState = CursorLockMode.Locked;
 
-            _controller = GetComponent<CharacterController>();
-            _input = GetComponent<StarterAssetsInputs>();
+			_controller = GetComponent<CharacterController>();
+			_input = GetComponent<StarterAssetsInputs>();
 
 #if ENABLE_INPUT_SYSTEM
-            _playerInput = GetComponent<PlayerInput>();
+			_playerInput = GetComponent<PlayerInput>();
 #else
     Debug.LogError("Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
 
-            _jumpTimeoutDelta = JumpTimeout;
-            _fallTimeoutDelta = FallTimeout;
-        }
+			_jumpTimeoutDelta = JumpTimeout;
+			_fallTimeoutDelta = FallTimeout;
+		}
 
-        private void Update()
+		private void Update()
 		{
+			if (!_canControl)
+				return;
+
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
@@ -122,6 +127,9 @@ namespace StarterAssets
 
 		private void LateUpdate()
 		{
+			if (!_canControl)
+				return;
+
 			CameraRotation();
 		}
 
@@ -139,7 +147,7 @@ namespace StarterAssets
 			{
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
-				
+
 				_cinemachineTargetPitch += _input.look.y * RotationSpeed * deltaTimeMultiplier;
 				_rotationVelocity = _input.look.x * RotationSpeed * deltaTimeMultiplier;
 
@@ -154,76 +162,76 @@ namespace StarterAssets
 			}
 		}
 
-        private void Move()
-        {
-            float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
+		private void Move()
+		{
+			float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
-            if (_input.move == Vector2.zero)
-                targetSpeed = 0.0f;
+			if (_input.move == Vector2.zero)
+				targetSpeed = 0.0f;
 
-            float currentHorizontalSpeed =
-                new Vector3(
-                    _controller.velocity.x,
-                    0.0f,
-                    _controller.velocity.z
-                ).magnitude;
+			float currentHorizontalSpeed =
+				new Vector3(
+					_controller.velocity.x,
+					0.0f,
+					_controller.velocity.z
+				).magnitude;
 
-            float speedOffset = 0.1f;
-            float inputMagnitude =
-                _input.analogMovement
-                ? _input.move.magnitude
-                : 1f;
+			float speedOffset = 0.1f;
+			float inputMagnitude =
+				_input.analogMovement
+				? _input.move.magnitude
+				: 1f;
 
-            if (
-                currentHorizontalSpeed < targetSpeed - speedOffset ||
-                currentHorizontalSpeed > targetSpeed + speedOffset
-            )
-            {
-                _speed = Mathf.Lerp(
-                    currentHorizontalSpeed,
-                    targetSpeed * inputMagnitude,
-                    Time.deltaTime * SpeedChangeRate
-                );
+			if (
+				currentHorizontalSpeed < targetSpeed - speedOffset ||
+				currentHorizontalSpeed > targetSpeed + speedOffset
+			)
+			{
+				_speed = Mathf.Lerp(
+					currentHorizontalSpeed,
+					targetSpeed * inputMagnitude,
+					Time.deltaTime * SpeedChangeRate
+				);
 
-                _speed =
-                    Mathf.Round(_speed * 1000f) / 1000f;
-            }
-            else
-            {
-                _speed = targetSpeed;
-            }
+				_speed =
+					Mathf.Round(_speed * 1000f) / 1000f;
+			}
+			else
+			{
+				_speed = targetSpeed;
+			}
 
-            Vector3 inputDirection =
-                new Vector3(
-                    _input.move.x,
-                    0.0f,
-                    _input.move.y
-                ).normalized;
+			Vector3 inputDirection =
+				new Vector3(
+					_input.move.x,
+					0.0f,
+					_input.move.y
+				).normalized;
 
-            if (_input.move != Vector2.zero)
-            {
-                inputDirection =
-                    transform.right * _input.move.x +
-                    transform.forward * _input.move.y;
+			if (_input.move != Vector2.zero)
+			{
+				inputDirection =
+					transform.right * _input.move.x +
+					transform.forward * _input.move.y;
 
-                if (LiveSystem.Instance != null)
-                {
-                    LiveSystem.Instance.ResetIdleTimer();
-                }
-            }
+				if (LiveSystem.Instance != null)
+				{
+					LiveSystem.Instance.ResetIdleTimer();
+				}
+			}
 
-            _controller.Move(
-                inputDirection.normalized *
-                (_speed * Time.deltaTime) +
-                new Vector3(
-                    0.0f,
-                    _verticalVelocity,
-                    0.0f
-                ) * Time.deltaTime
-            );
-        }
+			_controller.Move(
+				inputDirection.normalized *
+				(_speed * Time.deltaTime) +
+				new Vector3(
+					0.0f,
+					_verticalVelocity,
+					0.0f
+				) * Time.deltaTime
+			);
+		}
 
-        private void JumpAndGravity()
+		private void JumpAndGravity()
 		{
 			if (Grounded)
 			{
@@ -288,6 +296,21 @@ namespace StarterAssets
 
 			// when selected, draw a gizmo in the position of, and matching radius of, the grounded collider
 			Gizmos.DrawSphere(new Vector3(transform.position.x, transform.position.y - GroundedOffset, transform.position.z), GroundedRadius);
+		}
+		public void EnableControl()
+		{
+			_canControl = true;
+		}
+
+		public void DisableControl()
+		{
+			_canControl = false;
+
+			// Zera os inputs para evitar que o player continue andando
+			_input.move = Vector2.zero;
+			_input.look = Vector2.zero;
+			_input.jump = false;
+			_input.sprint = false;
 		}
 	}
 }
