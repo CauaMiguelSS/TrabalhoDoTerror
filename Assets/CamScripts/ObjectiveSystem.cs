@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 [System.Serializable]
 public class ObjectiveData
@@ -14,6 +15,10 @@ public class ObjectiveData
 public class ObjectiveSystem : MonoBehaviour
 {
     public static ObjectiveSystem Instance;
+    [SerializeField] public GameObject PanelObjective;
+
+    [Header("Input")]
+    [SerializeField] private InputActionReference _openObjectivesAction;
 
     [Header("UI")]
     [SerializeField] private TMP_Text _objectiveText;
@@ -27,7 +32,6 @@ public class ObjectiveSystem : MonoBehaviour
     private int _currentProgress;
     private Coroutine _progressRoutine;
 
-    // NOVA VARIÁVEL: Armazena a quantidade de documentos coletados no jogo
     private int _documentsFound = 0;
 
     private void Awake()
@@ -35,6 +39,34 @@ public class ObjectiveSystem : MonoBehaviour
         Instance = this;
     }
 
+    private void OnEnable()
+    {
+        if (_openObjectivesAction != null)
+        {
+            _openObjectivesAction.action.Enable();
+            _openObjectivesAction.action.performed += OpenPainel;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_openObjectivesAction != null)
+        {
+            _openObjectivesAction.action.performed -= OpenPainel;
+            _openObjectivesAction.action.Disable();
+        }
+    }
+    private void OpenPainel(InputAction.CallbackContext ctx)
+    {
+        bool open = !PanelObjective.activeSelf;
+
+        PanelObjective.SetActive(open);
+
+        Cursor.visible = open;
+        Cursor.lockState = open ? CursorLockMode.None : CursorLockMode.Locked;
+
+        Time.timeScale = open ? 0f : 1f;
+    }
     private void Start()
     {
         LoadCurrentObjective();
