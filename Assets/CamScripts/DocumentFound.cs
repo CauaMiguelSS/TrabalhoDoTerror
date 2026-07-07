@@ -1,29 +1,38 @@
 using UnityEngine;
-
-public class DocumentFound : MonoBehaviour
+public class DocumentFound : MonoBehaviour, IInteractable
 {
     [SerializeField] private int objectiveValue = 1;
+    [SerializeField] private LiveEventType eventType = LiveEventType.SECRET_DOCUMENT;
 
-    [Header("Live Event")]
-    [SerializeField]
-    private LiveEventType eventType = LiveEventType.SECRET_DOCUMENT;
-
-    private bool used;
-
-    private void OnTriggerEnter(Collider other)
+    private bool _used;
+    private Outline _outline;
+    private void Start()
     {
-        if (used)
+        _outline = GetComponentInChildren<Outline>();
+
+        if (_outline != null)
+            _outline.enabled = false;
+    }
+
+    public void Interact()
+    {
+        if (_used)
             return;
-
-        if (!other.CompareTag("Player"))
-            return;
-
-        used = true;
-
+        _used = true;
         ObjectiveSystem.Instance.AddProgress(objectiveValue);
-
-        LiveSystem.Instance.TriggerEvent(LiveEventType.SECRET_DOCUMENT);
-
+        LiveSystem.Instance.TriggerEvent(eventType);
         Destroy(gameObject);
+    }
+
+    public void ShowOutline()
+    {
+        if (_outline != null)
+            _outline.enabled = true;
+    }
+
+    public void HideOutline()
+    {
+        if (_outline != null)
+            _outline.enabled = false;
     }
 }
