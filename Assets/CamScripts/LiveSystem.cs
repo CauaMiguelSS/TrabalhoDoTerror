@@ -181,7 +181,7 @@ public class LiveSystem : MonoBehaviour
                 break;
 
             case LiveEventType.STRANGE_SOUND:
-                AddAudience(15);
+                AddAudience(40);
                 AddChatMessage(GetRandomMessage(_soundMessages));
                 break;
 
@@ -213,7 +213,7 @@ public class LiveSystem : MonoBehaviour
         }
     }
 
-    private void AddAudience(int amount)
+    public void AddAudience(int amount)
     {
         ShowAudiencePopup(amount);
 
