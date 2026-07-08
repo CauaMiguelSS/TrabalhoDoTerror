@@ -8,14 +8,14 @@ public class ObjectiveSystem : MonoBehaviour
     public static ObjectiveSystem Instance;
 
     [Header("UI")]
-    [SerializeField] private GameObject panelObjective;
-    [SerializeField] private TMP_Text objectivesText;
+    [SerializeField] private GameObject _panelObjective;
+    [SerializeField] private TMP_Text _objectivesText;
 
     [Header("Input")]
-    [SerializeField] private InputActionReference openObjectivesAction;
+    [SerializeField] private InputActionReference _openObjectivesAction;
 
-    private bool doorOpened;
-    private int documentsFound;
+    private bool _doorOpened;
+    private int _documentsFound;
 
     private void Awake()
     {
@@ -24,33 +24,33 @@ public class ObjectiveSystem : MonoBehaviour
 
     private void Start()
     {
-        panelObjective.SetActive(false);
+        _panelObjective.SetActive(false);
         UpdateObjectivesUI();
     }
 
     private void OnEnable()
     {
-        if (openObjectivesAction != null)
+        if (_openObjectivesAction != null)
         {
-            openObjectivesAction.action.Enable();
-            openObjectivesAction.action.performed += TogglePanel;
+            _openObjectivesAction.action.Enable();
+            _openObjectivesAction.action.performed += TogglePanel;
         }
     }
 
     private void OnDisable()
     {
-        if (openObjectivesAction != null)
+        if (_openObjectivesAction != null)
         {
-            openObjectivesAction.action.performed -= TogglePanel;
-            openObjectivesAction.action.Disable();
+            _openObjectivesAction.action.performed -= TogglePanel;
+            _openObjectivesAction.action.Disable();
         }
     }
 
     private void TogglePanel(InputAction.CallbackContext ctx)
     {
-        bool open = !panelObjective.activeSelf;
+        bool open = !_panelObjective.activeSelf;
 
-        panelObjective.SetActive(open);
+        _panelObjective.SetActive(open);
 
         Cursor.visible = open;
         Cursor.lockState = open
@@ -66,21 +66,21 @@ public class ObjectiveSystem : MonoBehaviour
 
     public void DoorOpened()
     {
-        doorOpened = true;
+        _doorOpened = true;
         UpdateObjectivesUI();
         CheckVictory();
     }
 
     public void RegisterDocumentFound()
     {
-        documentsFound++;
+        _documentsFound++;
         UpdateObjectivesUI();
         CheckVictory();
     }
 
     public void UpdateObjectivesUI()
     {
-        if (objectivesText == null)
+        if (_objectivesText == null)
             return;
 
         int viewers = 0;
@@ -88,9 +88,9 @@ public class ObjectiveSystem : MonoBehaviour
         if (LiveSystem.Instance != null)
             viewers = LiveSystem.Instance.CurrentAudience;
 
-        objectivesText.text =
-            (doorOpened ? "☑" : "☐") + " Open Security Door\n\n" +
-            (documentsFound >= 3 ? "☑" : "☐") + " Find 3 Documents (" + documentsFound + "/3)\n\n" +
+        _objectivesText.text =
+            (_doorOpened ? "☑" : "☐") + " Open Security Door\n\n" +
+            (_documentsFound >= 3 ? "☑" : "☐") + " Find 3 Documents (" + _documentsFound + "/3)\n\n" +
             (viewers >= 1500 ? "☑" : "☐") + " Reach 1500 Viewers (" + viewers + "/1500)";
     }
 
@@ -100,8 +100,8 @@ public class ObjectiveSystem : MonoBehaviour
             return;
 
         if (
-            doorOpened &&
-            documentsFound >= 3 &&
+            _doorOpened &&
+            _documentsFound >= 3 &&
             LiveSystem.Instance.CurrentAudience >= 1500
         )
         {

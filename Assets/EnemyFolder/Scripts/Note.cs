@@ -16,11 +16,17 @@ public class Note : MonoBehaviour, IInteractable
             _out.enabled = false;
     }
 
+    private bool _used;
+
     public void Interact()
     {
-        LiveSystem.Instance.AddDocument();
-
+        if (_used)
+            return;
+        _used = true;
+        ObjectiveSystem.Instance.RegisterDocumentFound();
+        LiveSystem.Instance.TriggerEvent(LiveEventType.SECRET_DOCUMENT);
         NoteUI.Instance.ShowNote(noteText, gameObject);
+        Destroy(gameObject);
     }
 
     public void ShowOutline()

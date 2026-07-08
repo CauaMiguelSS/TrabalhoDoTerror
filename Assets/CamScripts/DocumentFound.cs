@@ -16,6 +16,8 @@ public class DocumentFound : MonoBehaviour, IInteractable
 
     public void Interact()
     {
+        Debug.Log("DOCUMENTO PEGO");
+
         if (_used)
             return;
         _used = true;
