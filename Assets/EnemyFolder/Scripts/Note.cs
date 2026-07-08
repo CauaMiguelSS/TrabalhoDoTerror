@@ -18,7 +18,7 @@ public class Note : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        //LiveSystem.Instance.AddDocument();
+        LiveSystem.Instance.AddDocument();
 
         NoteUI.Instance.ShowNote(noteText, gameObject);
     }

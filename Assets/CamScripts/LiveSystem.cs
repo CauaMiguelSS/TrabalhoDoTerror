@@ -36,6 +36,10 @@ public class LiveSystem : MonoBehaviour
     private bool _isUpdatingAudience;
     private float _idleTimer;
 
+    [SerializeField] private int _documentsNeeded = 3;
+
+    private int _documentsFound = 0;
+
     [Header("Event Chat")]
     [SerializeField] private TMP_Text[] _chatSlots;
     [SerializeField] private float _messageDuration = 4f;
@@ -413,6 +417,24 @@ public class LiveSystem : MonoBehaviour
         {
             _chatSlots[i].text = "";
         }
+    }
+
+    private void CheckVictory()
+    {
+        if (_victoryTriggered)
+            return;
+
+        if (_audienceCount >= _viewerGoal && _documentsFound >= _documentsNeeded)
+        {
+            Victory();
+        }
+    }
+
+    public void AddDocument()
+    {
+        _documentsFound++;
+
+        CheckVictory();
     }
     public void Victory()
     {
