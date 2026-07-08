@@ -165,7 +165,6 @@ public class EnemyAI : MonoBehaviour
 
     void Patrol()
     {
-        Debug.Log("ESTOU PATRULHANDO");
         agent.speed = patrolSpeed;
 
         if (animator != null)
@@ -173,7 +172,6 @@ public class EnemyAI : MonoBehaviour
             animator.SetBool("Patrol", true);
             animator.SetBool("Chase", false);
 
-            Debug.Log("PATROL TRUE");
         }
 
         if (patrolPoints.Length == 0)

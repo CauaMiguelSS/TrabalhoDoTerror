@@ -1195,7 +1195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonsPress
   _nomeDaCena: SciFi_Warehouse
-  _painelCredits: {fileID: 0}
+  _painelCredits: {fileID: 1255074792}
 --- !u!1 &1003251052
 GameObject:
   m_ObjectHideFlags: 0

@@ -423,6 +423,8 @@ public class LiveSystem : MonoBehaviour
 
     private void CheckVictory()
     {
+        Debug.Log($"Views: {_audienceCount} | Docs: {_documentsFound}");
+
         if (_victoryTriggered)
             return;
 
@@ -435,6 +437,8 @@ public class LiveSystem : MonoBehaviour
     public void AddDocument()
     {
         _documentsFound++;
+
+        Debug.Log("Documentos: " + _documentsFound);
 
         CheckVictory();
     }

@@ -20,9 +20,15 @@ public class DocumentFound : MonoBehaviour, IInteractable
 
         if (_used)
             return;
+
         _used = true;
+
         ObjectiveSystem.Instance.RegisterDocumentFound();
+
+        LiveSystem.Instance.AddDocument();
+
         LiveSystem.Instance.TriggerEvent(eventType);
+
         Destroy(gameObject);
     }
 
