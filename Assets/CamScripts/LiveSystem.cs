@@ -405,7 +405,10 @@ public class LiveSystem : MonoBehaviour
             _audienceText.text = amount.ToString();
 
         if (ObjectiveSystem.Instance != null)
+        {
             ObjectiveSystem.Instance.UpdateObjectivesUI();
+            ObjectiveSystem.Instance.CheckVictory();
+        }
     }
 
     private string GetRandomMessage(string[] pool)
@@ -421,16 +424,12 @@ public class LiveSystem : MonoBehaviour
         }
     }
 
-    private void CheckVictory()
+    public void CheckVictory()
     {
-        Debug.Log($"Views: {_audienceCount} | Docs: {_documentsFound}");
-
-        if (_victoryTriggered)
-            return;
-
-        if (_audienceCount >= _viewerGoal && _documentsFound >= _documentsNeeded)
+        if (_documentsFound >= 3 &&
+            LiveSystem.Instance.CurrentAudience >= 1500)
         {
-            Victory();
+            LiveSystem.Instance.Victory();
         }
     }
 

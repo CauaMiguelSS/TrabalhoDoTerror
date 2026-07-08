@@ -57,8 +57,7 @@ public class ObjectiveSystem : MonoBehaviour
             ? CursorLockMode.None
             : CursorLockMode.Locked;
 
-        FirstPersonController player =
-            FindFirstObjectByType<FirstPersonController>();
+        FirstPersonController player = FindFirstObjectByType<FirstPersonController>();
 
         if (player != null)
             player.enabled = !open;
@@ -74,6 +73,9 @@ public class ObjectiveSystem : MonoBehaviour
     public void RegisterDocumentFound()
     {
         _documentsFound++;
+
+        Debug.Log("Documentos encontrados: " + _documentsFound);
+
         UpdateObjectivesUI();
         CheckVictory();
     }
@@ -99,12 +101,11 @@ public class ObjectiveSystem : MonoBehaviour
         if (LiveSystem.Instance == null)
             return;
 
-        if (
-            _doorOpened &&
-            _documentsFound >= 3 &&
-            LiveSystem.Instance.CurrentAudience >= 1500
-        )
+        if (_documentsFound >= 3 &&
+            LiveSystem.Instance.CurrentAudience >= 1500)
         {
+            Debug.Log("VITÓRIA!");
+
             LiveSystem.Instance.Victory();
         }
     }

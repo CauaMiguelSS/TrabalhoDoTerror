@@ -1,2 +1,16 @@
 fileFormatVersion: 2
 guid: 29a52fe4938aecc45900d99733350b79
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - _victoryPanel: {instanceID: 0}
+  - player: {instanceID: 0}
+  - victoryPanel: {instanceID: 0}
+  - _audienceText: {instanceID: 0}
+  - _audiencePopupText: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
