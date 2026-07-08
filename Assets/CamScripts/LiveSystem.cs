@@ -23,6 +23,8 @@ public class LiveSystem : MonoBehaviour
     [SerializeField] private GameObject _victoryPanel;
 
     private bool _victoryTriggered;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject victoryPanel;
 
     [Header("Audience")]
     [SerializeField] private TMP_Text _audienceText;
@@ -436,16 +438,10 @@ public class LiveSystem : MonoBehaviour
 
         CheckVictory();
     }
+
     public void Victory()
     {
-        _victoryTriggered = true;
-
-        Time.timeScale = 0f;
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        if (_victoryPanel != null)
-            _victoryPanel.SetActive(true);
+        player.SetActive(false);
+        victoryPanel.SetActive(true);
     }
 }
