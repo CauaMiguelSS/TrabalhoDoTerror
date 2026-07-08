@@ -397,6 +397,9 @@ public class LiveSystem : MonoBehaviour
     {
         if (_audienceText != null)
             _audienceText.text = amount.ToString();
+
+        if (ObjectiveSystem.Instance != null)
+            ObjectiveSystem.Instance.UpdateObjectivesUI();
     }
 
     private string GetRandomMessage(string[] pool)

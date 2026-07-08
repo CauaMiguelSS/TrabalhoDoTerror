@@ -5,6 +5,7 @@ public class Door : MonoBehaviour
     public bool open = false;
     public float altura = 3f;
     public float velocity = 2f;
+    private bool objectiveDone;
 
     private Vector3 destination;
     private AudioSource audioSource;
@@ -31,6 +32,11 @@ public class Door : MonoBehaviour
                 destination,
                 velocity * Time.deltaTime
             );
+            if (!objectiveDone)
+            {
+                objectiveDone = true;
+                ObjectiveSystem.Instance.DoorOpened();
+            }
         }
         else if(!open)
         { 
